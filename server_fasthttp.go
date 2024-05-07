@@ -145,11 +145,11 @@ func (u *FastHTTPUpgrader) Upgrade(ctx *fasthttp.RequestCtx, handler FastHTTPHan
 		return u.responseError(ctx, fasthttp.StatusBadRequest, fmt.Sprintf("%s 'websocket' token not found in 'Upgrade' header", badHandshake))
 	}
 
-	if !tokenContainsValue(strconv.B2S(ctx.Request.Header.Peek("Sec-Websocket-Version")), "13") {
+	if !tokenContainsValue(strconv.B2S(ctx.Request.Header.Peek("Sec-WebSocket-Version")), "13") {
 		return u.responseError(ctx, fasthttp.StatusBadRequest, "websocket: unsupported version: 13 not found in 'Sec-Websocket-Version' header")
 	}
 
-	if len(ctx.Response.Header.Peek("Sec-Websocket-Extensions")) > 0 {
+	if len(ctx.Response.Header.Peek("Sec-WebSocket-Extensions")) > 0 {
 		return u.responseError(ctx, fasthttp.StatusInternalServerError, "websocket: application specific 'Sec-WebSocket-Extensions' headers are unsupported")
 	}
 
@@ -161,7 +161,7 @@ func (u *FastHTTPUpgrader) Upgrade(ctx *fasthttp.RequestCtx, handler FastHTTPHan
 		return u.responseError(ctx, fasthttp.StatusForbidden, "websocket: request origin not allowed by FastHTTPUpgrader.CheckOrigin")
 	}
 
-	challengeKey := ctx.Request.Header.Peek("Sec-Websocket-Key")
+	challengeKey := ctx.Request.Header.Peek("Sec-WebSocket-Key")
 	if len(challengeKey) == 0 {
 		return u.responseError(ctx, fasthttp.StatusBadRequest, "websocket: not a websocket handshake: `Sec-WebSocket-Key' header is missing or blank")
 	}
