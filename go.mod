@@ -1,6 +1,6 @@
-module github.com/fasthttp/websocket
+module github.com/Pastir/websocket
 
-go 1.20
+go 1.22
 
 require (
 	github.com/klauspost/compress v1.17.7
